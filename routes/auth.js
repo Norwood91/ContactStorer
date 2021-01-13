@@ -7,7 +7,7 @@ const auth = require('../middleware/auth')
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User')
 
-const loginInfoMiddleware =[
+const loginInfoValidator =[
   body('email', 'Please include a valid email').isEmail(),
   body('password', 'Password is required').exists()
 ]
@@ -23,7 +23,7 @@ router.get('/', auth, async (req, res) => {
 });
 
 //Log In Route
-router.post('/', loginInfoMiddleware, async (req, res) => {
+router.post('/', loginInfoValidator, async (req, res) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     return res.status(400).json({errors: errors.array()})

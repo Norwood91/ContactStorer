@@ -6,7 +6,7 @@ const config = require('config')
 const { body, validationResult } = require('express-validator');
 const User = require('../models/User')
 
-const registerInfoMiddleware =
+const registerInfoValidator =
   [
     body('name', 'Please enter your name').not().isEmpty(),
     body('email', 'Please enter a valid email').isEmail(),
@@ -14,7 +14,7 @@ const registerInfoMiddleware =
   ]
 
 //Registration Route
-router.post('/', registerInfoMiddleware, async (req, res) => {
+router.post('/', registerInfoValidator, async (req, res) => {
     const errors = validationResult(req);
     //If errors isn't empty (if there ARE errors)
     if (!errors.isEmpty()) {
