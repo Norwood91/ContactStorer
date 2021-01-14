@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import ContactContext from '../../context/contact/contactContext';
 
 export default function ContactForm() {
+  const contactContext = useContext(ContactContext);
   const [contact, setContact] = useState({
     name: '',
     email: '',
@@ -11,9 +13,20 @@ export default function ContactForm() {
 
   const onChange = (e) =>
     setContact({ ...contact, [e.target.name]: e.target.value });
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    contactContext.addContact(contact);
+    setContact({
+      name: '',
+      email: '',
+      phone: '',
+      type: 'personal',
+    });
+  };
   return (
     <div>
-      <form>
+      <form onSubmit={onSubmit}>
         <h2 className='text-primary'>Add Contact</h2>
         <input
           type='text'
@@ -42,6 +55,7 @@ export default function ContactForm() {
           name='type'
           value='personal'
           checked={type === 'personal'}
+          onChange={onChange}
         />
         Personal{' '}
         <input
@@ -49,6 +63,7 @@ export default function ContactForm() {
           name='type'
           value='professional'
           checked={type === 'professional'}
+          onChange={onChange}
         />{' '}
         Professional
         <div>
