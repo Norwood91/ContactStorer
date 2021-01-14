@@ -19,14 +19,12 @@ export default function ContactItem({ contact }) {
       <ul className='list'>
         {email && (
           <li>
-            <i className='fas fa-envelope-open'></i>
-            {email}
+            <i className='fas fa-envelope-open'></i> {email}
           </li>
         )}
         {phone && (
           <li>
-            <i className='fas fa-phone'></i>
-            {phone}
+            <i className='fas fa-phone'></i> {phone}
           </li>
         )}
       </ul>
