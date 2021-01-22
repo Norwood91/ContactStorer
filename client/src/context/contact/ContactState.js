@@ -37,6 +37,9 @@ const ContactState = (props) => {
         type: 'wife',
       },
     ],
+    current: null,
+    //array of filtered contacts that match what's in the input
+    filtered: null,
   };
 
   //dispatch allows us to dispatch object to the reducer
@@ -48,15 +51,45 @@ const ContactState = (props) => {
     dispatch({ type: ADD_CONTACT, payload: contact });
   };
   //Delete Contact
+  const deleteContact = (id) => {
+    dispatch({ type: DELETE_CONTACT, payload: id });
+  };
   //Set Current Contact
+  const setCurrent = (contact) => {
+    //the payload is the passed in contact
+    dispatch({ type: SET_CURRENT, payload: contact });
+  };
   //Clear Current Contact
+  const clearCurrent = () => {
+    dispatch({ type: CLEAR_CURRENT });
+  };
   //Update Contact
+  const updateContact = (contact) => {
+    dispatch({ type: UPDATE_CONTACT, payload: contact });
+  };
   //Filter contacts
+  const filterContacts = (text) => {
+    dispatch({ type: FILTER_CONTACTS, payload: text });
+  };
   //Clear Filter
-
+  const clearFilter = () => {
+    dispatch({ type: CLEAR_FILTER });
+  };
   return (
     //Anything you want any component to access throughout the app goes inside the value brackets
-    <ContactContext.Provider value={{ contacts: state.contacts, addContact }}>
+    <ContactContext.Provider
+      value={{
+        contacts: state.contacts,
+        current: state.current,
+        addContact,
+        deleteContact,
+        setCurrent,
+        clearCurrent,
+        updateContact,
+        filterContacts,
+        clearFilter,
+      }}
+    >
       {props.children}
     </ContactContext.Provider>
   );
