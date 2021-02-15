@@ -1,6 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import AlertContext from '../../context/alert/alertContext';
+import AuthContext from '../../context/auth/authContext';
 
-export default function Register() {
+export default function Login(props) {
+  const alertContext = useContext(AlertContext);
+  const authContext = useContext(AuthContext);
+
+  const { setAlert } = alertContext;
+  const { login, error, clearErrors, isAuthenticated } = authContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      //after being authenticated(registerd) redirect to the home page ('/')
+      props.history.push('/');
+    }
+    if (error === 'Username or password is incorrect. Please try again') {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
+    //eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
+
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -12,7 +32,14 @@ export default function Register() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log('Login Submit');
+    if (email === '' || password === '') {
+      setAlert('Please enter all fields', 'danger');
+    } else {
+      login({
+        email,
+        password,
+      });
+    }
   };
 
   return (
@@ -23,7 +50,7 @@ export default function Register() {
       <form onSubmit={onSubmit}>
         <div className='form-group'>
           <label htmlFor='email'>Email</label>
-          <input type='email' name='email' value={email} onchange={onChange} />
+          <input type='email' name='email' value={email} onChange={onChange} />
         </div>
 
         <div className='form-group'>
@@ -32,7 +59,7 @@ export default function Register() {
             type='password'
             name='password'
             value={password}
-            onchange={onChange}
+            onChange={onChange}
           />
         </div>
         <input
